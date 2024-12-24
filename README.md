@@ -1,4 +1,11 @@
 # Lightroom AI Tagger
+[![Development Status](https://img.shields.io/pypi/status/lr-autotag)](https://pypi.org/project/lr-autotag/)
+[![PyPI version](https://img.shields.io/pypi/v/lr-autotag.svg)](https://pypi.org/project/lr-autotag/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://img.shields.io/github/actions/workflow/status/Jsakkos/lightroom-autotag/documentation.yml?label=docs)](https://jsakkos.github.io/mkv-episode-matcher/)
+[![GitHub issues](https://img.shields.io/github/issues/Jsakkos/lightroom-autotag)](https://github.com/Jsakkos/lightroom-autotag/issues)
+[![Tests](https://github.com/Jsakkos/lightroom-autotag/actions/workflows/tests.yml/badge.svg)](https://github.com/Jsakkos/lightroom-autotag/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/Jsakkos/lightroom-autotag/branch/main/graph/badge.svg)](https://codecov.io/gh/Jsakkos/lightroom-autotag)
 
 An intelligent tagging assistant for Adobe Lightroom Classic that uses OpenAI's CLIP model to automatically generate relevant keywords for your photos.
 
@@ -13,7 +20,7 @@ An intelligent tagging assistant for Adobe Lightroom Classic that uses OpenAI's 
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.9+
 - Adobe Lightroom Classic
 - PyTorch
 - transformers
