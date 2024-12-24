@@ -29,7 +29,8 @@ jobs:
         run: |
           uv venv
           uv pip install -e .
-          uv tool install pytest pytest-cov
+          uv tool install pytest 
+          uv tool install pytest-cov
 
       - name: Run tests with pytest and coverage
         run: |
