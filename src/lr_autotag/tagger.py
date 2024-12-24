@@ -8,12 +8,14 @@ import xml.etree.ElementTree as ET
 
 
 class LightroomClassicTagger:
-    def __init__(self, catalog_path=None):
+    def __init__(self, catalog_path=None, image_folder=None, keywords_file="src/lr_autotag/Foundation List 2.0.1.txt"):
         """Initialize the tagger with CLIP model and Lightroom catalog connection"""
         self.model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
         self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
         self.catalog_path = catalog_path
-        self.keywords = self.extract_keywords("./Foundation List 2.0.1.txt")
+        self.image_folder = image_folder
+        self.keywords_file = keywords_file
+        self.keywords = self.extract_keywords(keywords_file)
 
         # Pre-compute text features for efficiency
         self.text_features = None
@@ -29,6 +31,9 @@ class LightroomClassicTagger:
         Returns:
             list: List of all keywords and their aliases
         """
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Keywords file not found: {file_path}")
+
         keywords = set()
 
         with open(file_path, "r", encoding="utf-8") as file:
@@ -51,7 +56,7 @@ class LightroomClassicTagger:
                 else:
                     # Add regular terms
                     keywords.add(line)
-
+        print(f"Loaded {len(keywords)} keywords from {file_path}")
         # Convert to sorted list and remove any empty strings
         return sorted([k for k in keywords if k])
 
@@ -80,6 +85,20 @@ class LightroomClassicTagger:
         conn.close()
         return images
 
+    def get_folder_images(self):
+        """Get list of images from the specified folder"""
+        if not self.image_folder or not os.path.exists(self.image_folder):
+            raise ValueError("Invalid image folder path")
+        
+        supported_extensions = ('.nef', '.jpg', '.jpeg', '.dng', '.cr2', '.arw', '.png', '.tif', '.tiff')
+        images = [
+            os.path.join(root, file)
+            for root, _, files in os.walk(self.image_folder)
+            for file in files
+            if file.lower().endswith(supported_extensions)
+        ]
+        return [(None, image) for image in images]
+
     def generate_image_embeddings(self, image_path):
         """Generate CLIP embeddings for an image"""
         try:
@@ -94,11 +113,14 @@ class LightroomClassicTagger:
                 image = image.resize(new_size, Image.Resampling.LANCZOS)
 
             inputs = self.processor(images=image, return_tensors="pt", padding=True)
-            image_features = self.model.get_image_features(**inputs)
+            with torch.no_grad():
+                image_features = self.model.get_image_features(**inputs)
 
             # Normalize the features
             image_features = image_features / image_features.norm(dim=-1, keepdim=True)
-            return image_features
+            
+            # Move to CPU if on GPU
+            return image_features.cpu()
 
         except Exception as e:
             print(f"Error processing image {image_path}: {str(e)}")
@@ -107,17 +129,22 @@ class LightroomClassicTagger:
     def generate_text_embeddings(self):
         """Generate CLIP embeddings for all keywords"""
         if self.text_features is None:
+            print(f"Generating embeddings for {len(self.keywords)} keywords...")
             inputs = self.processor(
                 text=self.keywords, return_tensors="pt", padding=True
             )
-            self.text_features = self.model.get_text_features(**inputs)
+            with torch.no_grad():
+                self.text_features = self.model.get_text_features(**inputs)
             # Normalize the features
             self.text_features = self.text_features / self.text_features.norm(
                 dim=-1, keepdim=True
             )
+            # Move to CPU
+            self.text_features = self.text_features.cpu()
+            print("Text embeddings generated successfully")
         return self.text_features
 
-    def get_top_keywords(self, image_path, threshold=0.5, max_keywords=20):
+    def get_top_keywords(self, image_path, threshold=0.25, max_keywords=20):  # Lowered threshold
         """Get top matching keywords for an image"""
         image_features = self.generate_image_embeddings(image_path)
         if image_features is None:
@@ -126,26 +153,28 @@ class LightroomClassicTagger:
         text_features = self.generate_text_embeddings()
 
         try:
-            # Calculate cosine similarity
+            # Ensure both tensors are on CPU and calculate cosine similarity
             similarity = torch.matmul(image_features, text_features.T).squeeze()
-
+            
             # Get top matches above threshold
             top_matches = []
-            scores = similarity.tolist()
+            scores = similarity.numpy().tolist()  # Convert to numpy then to list
 
             for score, keyword in zip(scores, self.keywords):
                 if score > threshold:
                     top_matches.append((keyword, float(score)))
-
+                    
             # Sort by score and limit to max_keywords
             top_matches.sort(key=lambda x: x[1], reverse=True)
+            if not top_matches:
+                print(f"No keywords found above threshold {threshold}")
             return top_matches[:max_keywords]
 
         except Exception as e:
             print(f"Error calculating similarities for {image_path}: {str(e)}")
             return []
 
-    def update_xmp_sidecar(self, image_path, keywords):
+    def update_xmp_sidecar(self, image_path, keywords, overwrite=False):
         """Update or create XMP sidecar file with keywords"""
         xmp_path = os.path.splitext(image_path)[0] + ".xmp"
 
@@ -205,15 +234,21 @@ class LightroomClassicTagger:
                     subject, "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}Bag"
                 )
 
-        # Get existing keywords
-        existing_keywords = set()
-        for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
-            if item.text:
-                existing_keywords.add(item.text.strip())
+        if overwrite:
+            # Clear all existing keywords
+            for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
+                bag.remove(item)
+            all_keywords = set(keyword for keyword, _ in keywords)
+        else:
+            # Get existing keywords
+            existing_keywords = set()
+            for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
+                if item.text:
+                    existing_keywords.add(item.text.strip())
 
-        # Add new keywords while preserving existing ones
-        new_keywords = set(keyword for keyword, _ in keywords)
-        all_keywords = existing_keywords.union(new_keywords)
+            # Add new keywords while preserving existing ones
+            new_keywords = set(keyword for keyword, _ in keywords)
+            all_keywords = existing_keywords.union(new_keywords)
 
         # Clear bag and add all keywords
         for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
@@ -233,13 +268,13 @@ class LightroomClassicTagger:
         tree = ET.ElementTree(root)
         tree.write(xmp_path, encoding="UTF-8", xml_declaration=True)
 
-    def process_catalog(self, output_path=None):
-        """Process all images in the Lightroom catalog"""
-        if not self.catalog_path:
-            raise ValueError("Catalog path not set")
+    def process_catalog(self, output_path=None, overwrite=False):
+        """Process all images in the Lightroom catalog or specified folder"""
+        if not self.catalog_path and not self.image_folder:
+            raise ValueError("Either catalog path or image folder must be set")
 
         results = {}
-        images = self.get_catalog_images()
+        images = self.get_catalog_images() if self.catalog_path else self.get_folder_images()
         total_images = len(images)
 
         for idx, (image_id, image_path) in enumerate(images, 1):
@@ -248,7 +283,7 @@ class LightroomClassicTagger:
                 keywords = self.get_top_keywords(image_path)
                 if keywords:
                     results[image_path] = keywords
-                    self.update_xmp_sidecar(image_path, keywords)
+                    self.update_xmp_sidecar(image_path, keywords, overwrite)
                     print(f"Found {len(keywords)} keywords")
                 else:
                     print("No keywords found")
@@ -265,13 +300,7 @@ class LightroomClassicTagger:
 
 
 def main():
-    # Example usage
-    catalog_path = r"E:\Lightroom\Catalog/2024.lrcat"
-    tagger = LightroomClassicTagger(catalog_path)
-
-    # Process entire catalog
-    results = tagger.process_catalog("keyword_suggestions.json")
-
+    pass
 
 if __name__ == "__main__":
     main()
