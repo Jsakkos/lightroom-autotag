@@ -258,15 +258,16 @@ class LightroomClassicTagger:
                 bag = ET.SubElement(
                     subject, "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}Bag"
                 )
-
+        # Get existing keywords
+        existing_keywords = set()
         if overwrite:
             # Clear all existing keywords
             for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
                 bag.remove(item)
             all_keywords = set(keyword for keyword, _ in keywords)
+            new_keywords = all_keywords
         else:
-            # Get existing keywords
-            existing_keywords = set()
+
             for item in bag.findall("{http://www.w3.org/1999/02/22-rdf-syntax-ns#}li"):
                 if item.text:
                     existing_keywords.add(item.text.strip())

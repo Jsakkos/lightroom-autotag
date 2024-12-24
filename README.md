@@ -50,27 +50,32 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 uv pip install -e ".[dev]"
 ```
 
-3. Download the Foundation List file and place it in the project directory.
-
-## Usage
+## CLI Usage
 
 1. Close Lightroom Classic if it's running
 
-2. Modify the catalog path in the script to point to your Lightroom catalog:
-```python
-catalog_path = "path/to/your/catalog.lrcat"
-```
-
-3. Run the script:
+2. Run the CLI and point to your Lightroom catalog file or directory of images:
 ```bash
-python lightroom-tagger.py
+lr-autotag --catalog "path/to/catalog.lrcat"
 ```
 
-The script will:
-- Scan your Lightroom catalog for images
-- Generate AI keywords for each image
-- Create or update XMP sidecar files with the new keywords
-- Save a JSON report of all suggestions
+```bash
+lr-autotag --images "path/to/images"
+```
+
+3. Open Lightroom Classic and wait for the catalog to reload
+4. Load the XMP sidecar files to see the generated keywords
+5. Enjoy your newly tagged images!
+
+### Options
+
+- `--catalog` or `-c`: Path to the Lightroom catalog file
+- `--images` or `-i`: Path to a directory of images
+- `--threshold` or `-t`: Confidence threshold for keyword suggestions (default: 0.5)
+- `--max_keywords` or `-m`: Maximum number of keywords per image (default: 20)
+- `--max_size` or `-s`: Maximum image dimension for processing (default: 1024)
+- `--help` or `-h`: Show help message
+
 
 ### Important Notes
 - Always ensure you have enough disk space for catalog backups
