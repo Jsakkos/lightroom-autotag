@@ -62,3 +62,11 @@ ignore = ["E501","E402","S101","S113","E741","UP008"]  # Line length is handled 
 
 [tool.ruff.lint.isort]
 known-first-party = ["foo", "bar"]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4",
+    "ruff>=0.8.4",
+    "mypy>=1.14.0",
+]
