@@ -65,6 +65,11 @@ The script will:
 - Create or update XMP sidecar files with the new keywords
 - Save a JSON report of all suggestions
 
+### Important Notes
+- Always ensure you have enough disk space for catalog backups
+- Backup files are not automatically cleaned up - you may want to periodically remove old backups
+- The backup process might take a few moments for large catalogs
+
 ## Configuration
 
 You can adjust these parameters in the script:
@@ -80,6 +85,13 @@ You can adjust these parameters in the script:
 3. The image embeddings are compared against pre-computed embeddings of the Foundation List keywords
 4. Keywords with similarity scores above the threshold are selected
 5. The keywords are written to XMP sidecar files that Lightroom can read
+
+## Safety Features
+
+### Catalog Backup
+Before any operations that access the Lightroom catalog, the tool automatically creates a timestamped backup of your catalog file. The backup is stored in the same directory as your original catalog with the format: `[original_name]_YYYYMMDD_HHMMSS.backup`.
+
+If the backup process fails for any reason, the tool will not proceed with catalog operations to ensure your data's safety.
 
 ## Contributing
 

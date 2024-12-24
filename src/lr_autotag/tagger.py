@@ -2,10 +2,14 @@ import os
 import json
 import sqlite3
 import torch
+import shutil
+from datetime import datetime
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import xml.etree.ElementTree as ET
 
+# Add at the top with other class-level code
+BACKUP_EXTENSION = '.backup'
 
 class LightroomClassicTagger:
     def __init__(self, catalog_path=None, image_folder=None, keywords_file="src/lr_autotag/Foundation List 2.0.1.txt"):
@@ -60,10 +64,31 @@ class LightroomClassicTagger:
         # Convert to sorted list and remove any empty strings
         return sorted([k for k in keywords if k])
 
-    def connect_to_catalog(self):
-        """Connect to Lightroom catalog SQLite database"""
+    def backup_catalog(self):
+        """Create a backup of the Lightroom catalog before processing"""
         if not self.catalog_path or not os.path.exists(self.catalog_path):
             raise ValueError("Invalid Lightroom catalog path")
+
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        backup_path = f"{self.catalog_path}_{timestamp}{BACKUP_EXTENSION}"
+        
+        try:
+            shutil.copy2(self.catalog_path, backup_path)
+            print(f"Created catalog backup: {backup_path}")
+            return True
+        except Exception as e:
+            print(f"Failed to create catalog backup: {str(e)}")
+            return False
+
+    def connect_to_catalog(self):
+        """Connect to Lightroom catalog SQLite database with backup"""
+        if not self.catalog_path or not os.path.exists(self.catalog_path):
+            raise ValueError("Invalid Lightroom catalog path")
+        
+        # Create backup before connecting
+        if not self.backup_catalog():
+            raise RuntimeError("Failed to create catalog backup, aborting connection")
+            
         return sqlite3.connect(self.catalog_path)
 
     def get_catalog_images(self):
@@ -268,7 +293,7 @@ class LightroomClassicTagger:
         tree = ET.ElementTree(root)
         tree.write(xmp_path, encoding="UTF-8", xml_declaration=True)
 
-    def process_catalog(self, output_path=None, overwrite=False):
+    def process_catalog(self, output_path=None, overwrite=False, dry_run=False):
         """Process all images in the Lightroom catalog or specified folder"""
         if not self.catalog_path and not self.image_folder:
             raise ValueError("Either catalog path or image folder must be set")
@@ -277,13 +302,17 @@ class LightroomClassicTagger:
         images = self.get_catalog_images() if self.catalog_path else self.get_folder_images()
         total_images = len(images)
 
+        if dry_run:
+            print("DRY RUN: No XMP files will be modified")
+
         for idx, (image_id, image_path) in enumerate(images, 1):
             print(f"Processing image {idx}/{total_images}: {image_path}")
             try:
                 keywords = self.get_top_keywords(image_path)
                 if keywords:
                     results[image_path] = keywords
-                    self.update_xmp_sidecar(image_path, keywords, overwrite)
+                    if not dry_run:
+                        self.update_xmp_sidecar(image_path, keywords, overwrite)
                     print(f"Found {len(keywords)} keywords")
                 else:
                     print("No keywords found")
