@@ -1,0 +1,64 @@
+[project]
+name = "lr-autotag"
+version = "0.1.0"
+description = "AI-powered keyword tagging assistant for Adobe Lightroom Classic"
+readme = "README.md"
+authors = [
+    { name = "Jsakkos", email = "jonathansakkos@protonmail.com" }
+]
+license = {file = "LICENSE"}
+keywords = ["lightroom", "ai", "clip", "image", "tagging", "photography"]
+classifiers = [
+"Development Status :: 4 - Beta",
+"Intended Audience :: End Users/Desktop",
+"License :: OSI Approved :: MIT License",
+"Programming Language :: Python :: 3",
+"Programming Language :: Python :: 3.8",
+"Programming Language :: Python :: 3.9",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Topic :: Multimedia :: Graphics",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pillow>=11.0.0",
+    "torch>=2.5.1",
+    "transformers>=4.47.1",
+]
+
+[project.scripts]
+lr-autotag = "lr_autotag:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+preview = true
+extend-select = ["C901"]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP",  # pyupgrade
+    "N",  # pep8-naming
+    "YTT",  # flake8-2020
+    #"S",  # flake8-bandit
+]
+ignore = ["E501","E402","S101","S113","E741","UP008"]  # Line length is handled by formatter
+
+[tool.ruff.lint.extend-per-file-ignores]
+"docs/.hooks/*" = ["INP001", "T201"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["foo", "bar"]
