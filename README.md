@@ -2,7 +2,7 @@
 [![Development Status](https://img.shields.io/pypi/status/lr-autotag)](https://pypi.org/project/lr-autotag/)
 [![PyPI version](https://img.shields.io/pypi/v/lr-autotag.svg)](https://pypi.org/project/lr-autotag/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation Status](https://img.shields.io/github/actions/workflow/status/Jsakkos/lightroom-autotag/documentation.yml?label=docs)](https://jsakkos.github.io/mkv-episode-matcher/)
+[![Documentation Status](https://img.shields.io/github/actions/workflow/status/Jsakkos/lightroom-autotag/documentation.yml?label=docs)](https://jsakkos.github.io/lightroom-autotag/)
 [![GitHub issues](https://img.shields.io/github/issues/Jsakkos/lightroom-autotag)](https://github.com/Jsakkos/lightroom-autotag/issues)
 [![Tests](https://github.com/Jsakkos/lightroom-autotag/actions/workflows/tests.yml/badge.svg)](https://github.com/Jsakkos/lightroom-autotag/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Jsakkos/lightroom-autotag/branch/main/graph/badge.svg)](https://codecov.io/gh/Jsakkos/lightroom-autotag)
