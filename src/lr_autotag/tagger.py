@@ -8,7 +8,6 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import xml.etree.ElementTree as ET
 
-# Add at the top with other class-level code
 BACKUP_EXTENSION = '.backup'
 
 class LightroomClassicTagger:
