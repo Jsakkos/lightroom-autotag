@@ -39,7 +39,7 @@ Or, for development:
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/lr-autotag.git
+git clone https://github.com/jsakkos/lr-autotag.git
 cd lr-autotag
 ```
 
