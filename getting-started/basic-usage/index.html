@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#basic-usage-guide" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -433,6 +438,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Basic Usage
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -443,6 +461,136 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Instructions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step Instructions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-prepare-your-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Prepare Your Images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-run-the-tagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Run the Tagger
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-review-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Review Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-import-keywords-in-lightroom" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Import Keywords in Lightroom
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-for-best-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips for Best Results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-workflows" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Workflows
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Workflows">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batch-processing-new-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Batch Processing New Images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overwriting-existing-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overwriting Existing Keywords
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -563,9 +711,72 @@
   
 
 
-  <h1>Basic Usage</h1>
-
-
+<h1 id="basic-usage-guide">Basic Usage Guide<a class="headerlink" href="#basic-usage-guide" title="Permanent link">&para;</a></h1>
+<p>This guide covers the fundamental workflow for using Lightroom AI Tagger.</p>
+<h2 id="workflow-overview">Workflow Overview<a class="headerlink" href="#workflow-overview" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Prepare your images in Lightroom Classic</li>
+<li>Close Lightroom Classic</li>
+<li>Run the tagger</li>
+<li>Review and import the keywords in Lightroom</li>
+</ol>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions<a class="headerlink" href="#step-by-step-instructions" title="Permanent link">&para;</a></h2>
+<h3 id="1-prepare-your-images">1. Prepare Your Images<a class="headerlink" href="#1-prepare-your-images" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ensure your images are properly imported into Lightroom Classic</li>
+<li>Organize images into collections if desired</li>
+<li>Make sure all images have XMP sidecar files enabled:</li>
+<li>Go to Catalog Settings &gt; Metadata</li>
+<li>Check "Automatically write changes into XMP"</li>
+</ul>
+<h3 id="2-run-the-tagger">2. Run the Tagger<a class="headerlink" href="#2-run-the-tagger" title="Permanent link">&para;</a></h3>
+<p>Basic command for processing a Lightroom catalog:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>lr-autotag<span class="w"> </span>--catalog<span class="w"> </span><span class="s2">&quot;path/to/catalog.lrcat&quot;</span>
+</code></pre></div>
+<p>Or process a folder of images:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>lr-autotag<span class="w"> </span>--image-folder<span class="w"> </span><span class="s2">&quot;path/to/images&quot;</span>
+</code></pre></div>
+<h3 id="3-review-results">3. Review Results<a class="headerlink" href="#3-review-results" title="Permanent link">&para;</a></h3>
+<p>The tool will:
+- Process each image through the AI model
+- Generate relevant keywords
+- Update XMP sidecar files
+- Create a JSON report (optional)</p>
+<p>Example output:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Processing image 1/50: DSC_0001.NEF
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Found 15 keywords
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Added new keywords: landscape, mountain, sunset, nature
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Total keywords: 15
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Processing image 2/50: DSC_0002.NEF
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Found 12 keywords
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>Added new keywords: portrait, indoor, lighting
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Total keywords: 12
+</code></pre></div></p>
+<h3 id="4-import-keywords-in-lightroom">4. Import Keywords in Lightroom<a class="headerlink" href="#4-import-keywords-in-lightroom" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Reopen Lightroom Classic</li>
+<li>Select the processed images</li>
+<li>From the menu: Metadata &gt; Read Metadata from Files</li>
+<li>Review the imported keywords in the Keywording panel</li>
+</ol>
+<h2 id="tips-for-best-results">Tips for Best Results<a class="headerlink" href="#tips-for-best-results" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use the <code>--threshold</code> option to adjust keyword sensitivity</li>
+<li>Start with <code>--dry-run</code> to preview changes</li>
+<li>Use <code>--max-keywords</code> to limit the number of keywords per image</li>
+<li>Keep Lightroom closed while processing to avoid conflicts</li>
+</ul>
+<h2 id="common-workflows">Common Workflows<a class="headerlink" href="#common-workflows" title="Permanent link">&para;</a></h2>
+<h3 id="batch-processing-new-images">Batch Processing New Images<a class="headerlink" href="#batch-processing-new-images" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>lr-autotag<span class="w"> </span>--image-folder<span class="w"> </span><span class="s2">&quot;new_photos&quot;</span><span class="w"> </span>--threshold<span class="w"> </span><span class="m">0</span>.3<span class="w"> </span>--max-keywords<span class="w"> </span><span class="m">25</span>
+</code></pre></div>
+<h3 id="testing-settings">Testing Settings<a class="headerlink" href="#testing-settings" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>lr-autotag<span class="w"> </span>--catalog<span class="w"> </span><span class="s2">&quot;catalog.lrcat&quot;</span><span class="w"> </span>--dry-run<span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;test_results.json&quot;</span>
+</code></pre></div>
+<h3 id="overwriting-existing-keywords">Overwriting Existing Keywords<a class="headerlink" href="#overwriting-existing-keywords" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>lr-autotag<span class="w"> </span>--catalog<span class="w"> </span><span class="s2">&quot;catalog.lrcat&quot;</span><span class="w"> </span>--overwrite
+</code></pre></div>
 
 
 

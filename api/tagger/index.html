@@ -75,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#lightroomclassictagger-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -520,6 +525,19 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    LightroomClassicTagger
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -530,6 +548,115 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#class-lightroomclassictagger" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class: LightroomClassicTagger
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class: LightroomClassicTagger">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#process_catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      process_catalog()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_top_keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_top_keywords()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_xmp_sidecar" class="md-nav__link">
+    <span class="md-ellipsis">
+      update_xmp_sidecar()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -561,9 +688,41 @@
   
 
 
-  <h1>LightroomClassicTagger</h1>
-
-
+<h1 id="lightroomclassictagger-api-reference">LightroomClassicTagger API Reference<a class="headerlink" href="#lightroomclassictagger-api-reference" title="Permanent link">&para;</a></h1>
+<h2 id="class-lightroomclassictagger">Class: LightroomClassicTagger<a class="headerlink" href="#class-lightroomclassictagger" title="Permanent link">&para;</a></h2>
+<p>Main class for handling image analysis and keyword generation.</p>
+<h3 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">LightroomClassicTagger</span><span class="p">(</span><span class="n">catalog_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keywords_file</span><span class="o">=</span><span class="s2">&quot;src/lr_autotag/Foundation List 2.0.1.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="parameters">Parameters:<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>catalog_path</code> (str, optional): Path to Lightroom catalog file</li>
+<li><code>image_folder</code> (str, optional): Path to folder containing images</li>
+<li><code>keywords_file</code> (str): Path to keywords hierarchy file</li>
+</ul>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h3>
+<h4 id="process_catalog">process_catalog()<a class="headerlink" href="#process_catalog" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span> <span class="nf">process_catalog</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dry_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+Process all images in the catalog or folder.</p>
+<h4 id="get_top_keywords">get_top_keywords()<a class="headerlink" href="#get_top_keywords" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span> <span class="nf">get_top_keywords</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">max_keywords</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
+Generate keywords for a single image.</p>
+<h4 id="update_xmp_sidecar">update_xmp_sidecar()<a class="headerlink" href="#update_xmp_sidecar" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">update_xmp_sidecar</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+Update or create XMP sidecar file with keywords.</p>
+<h3 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Initialize tagger</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">tagger</span> <span class="o">=</span> <span class="n">LightroomClassicTagger</span><span class="p">(</span><span class="n">catalog_path</span><span class="o">=</span><span class="s2">&quot;path/to/catalog.lrcat&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Process entire catalog</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">tagger</span><span class="o">.</span><span class="n">process_catalog</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;results.json&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># Process single image</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">keywords</span> <span class="o">=</span> <span class="n">tagger</span><span class="o">.</span><span class="n">get_top_keywords</span><span class="p">(</span><span class="s2">&quot;path/to/image.jpg&quot;</span><span class="p">)</span>
+</code></pre></div>
 
 
 
