@@ -29,15 +29,14 @@ jobs:
         run: |
           uv venv
           uv pip install -e .
-          uv tool install pytest
 
       - name: Run tests with pytest and coverage
         run: |
-          uvx pytest tests
+          uv run --dev pytest tests --cov=lr_autotag --cov-report xml
 
-      # - name: Upload coverage to Codecov
-      #   uses: codecov/codecov-action@v3
-      #   with:
-      #     file: ./coverage.xml
-      #     flags: unittests
-      #     fail_ci_if_error: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
