@@ -34,14 +34,9 @@ nav:
       - Installation: getting-started/installation.md
       - Configuration: getting-started/configuration.md
       - Basic Usage: getting-started/basic-usage.md
-  - Advanced:
-      - Custom Keywords: advanced/custom-keywords.md
-      - Performance Tuning: advanced/performance.md
-      - Troubleshooting: advanced/troubleshooting.md
+      - Command Line: getting-started/cli.md
   - API Reference:
       - LightroomClassicTagger: api/tagger.md
-  - Contributing: contributing.md
-  - License: license.md
 
 markdown_extensions:
   - admonition
@@ -58,5 +53,26 @@ markdown_extensions:
 
 plugins:
   - search
-  - minify:
-      minify_html: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [../src/lr_autotag]
+          options:
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            docstring_style: google
+            show_signature: true
+            members_order: source
+            separate_signature: true
+            merge_init_into_class: true
+            show_if_no_docstring: false
+            filters: ["!^_"]
+            docstring_section_style: spacy
+            inherited_members: true
+            heading_level: 2
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Jsakkos/lightroom-autotag

@@ -39,4 +39,3 @@ lr-autotag --image-folder "path/to/images"
 
 - Read the [Installation Guide](getting-started/installation.md) for detailed setup instructions
 - Check the [Basic Usage](getting-started/basic-usage.md) guide to get started
-- Review [Advanced Features](advanced/custom-keywords.md) for power users
